@@ -80,6 +80,7 @@ This document specifies the API module responsible for managing and updating use
                                         +----------------+
 ```
 
+```
 +------------+ WebSocket +------------------+ Database Update +-----------------+
 | Client | <------------------> | API WebSocket | ------------------------> | Scoreboard DB |
 | (Browser) | | Server | | (Top 10 Users) |
@@ -96,6 +97,7 @@ This document specifies the API module responsible for managing and updating use
 | |
 | Client updates UI instantly |
 |<---------------------------------| (4) Browser re-renders scoreboard
+```
 
 ## Improvements & Future Enhancements
 
