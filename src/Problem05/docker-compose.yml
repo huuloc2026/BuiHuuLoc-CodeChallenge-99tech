@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-microservice
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=huuloc2026
+      - MYSQL_DATABASE=social_network
+    volumes:
+      - social_mysql:/var/lib/mysql
+    networks:
+      - social
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+networks:
+  social:
+
+volumes:
+  social_mysql:
