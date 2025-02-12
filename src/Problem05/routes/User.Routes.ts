@@ -3,10 +3,10 @@ import { UserController } from "../controllers/User.controller";
 import { asyncHandler } from "../middleware/asyncHandler";
 const UserRouter = express.Router();
 
-UserRouter.post("/create", asyncHandler(UserController.create));
-UserRouter.get("/list", asyncHandler(UserController.listWithPaging));
-UserRouter.get("/getdetail", asyncHandler(UserController.getDetail));
-UserRouter.put("/update:id", asyncHandler(UserController.update));
-UserRouter.delete("/delete:id", asyncHandler(UserController.delete));
+UserRouter.post("/create", UserController.create);
+UserRouter.get("/", UserController.listWithPaging);
+UserRouter.get("/:id", UserController.getDetail);
+UserRouter.put("/:id", UserController.update);
+UserRouter.delete("/:id", UserController.delete);
 
 export default UserRouter;

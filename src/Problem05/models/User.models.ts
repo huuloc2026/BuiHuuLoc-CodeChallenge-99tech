@@ -1,59 +1,22 @@
-import { model, Schema } from "mongoose";
-export interface IShop extends Document {
+import mongoose, { Document, Schema } from "mongoose";
+
+export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  roles?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
-const DOCUMENT_NAME = "SHOP";
-const COLLECTION_NAME = "SHOPS";
 
-// Declare the Schema of the Mongo model
-const shopSchema: Schema = new Schema(
+const UserSchema: Schema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      maxLength: 150,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    phone: {
-      type: String,
-      required: false,
-    },
-    dateOfBirth: {
-      type: Date,
-      required: false,
-    },
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "inactive",
-    },
-    verify: {
-      type: Schema.Types.Boolean,
-      default: false,
-    },
-    roles: {
-      type: String,
-      default: "USER",
-      enum: ["ADMIN", "USER", "MODERATOR"],
-    },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    phone: { type: String, required: false, default: "" },
+    gender: { type: String, required: false, default: "Other" },
   },
-  {
-    timestamps: true,
-    collection: COLLECTION_NAME,
-  }
+  { timestamps: true }
 );
-const ShopModel = model<IShop & Document>(DOCUMENT_NAME, shopSchema);
 
-export default ShopModel;
+export const User = mongoose.model<IUser>("User", UserSchema);
