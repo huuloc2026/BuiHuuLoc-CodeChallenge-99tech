@@ -19,17 +19,15 @@
 
 4. Problem 04: Three Way to Sum n
 
-```sh
+   ```sh
    cd src/04
+   ```
 
-```
-
-```sh
+   ```sh
    npm run 04
+   ```
 
-```
-
-4. Problem 05: A Crude Server - Express TypeScript CRUD API
+5. Problem 05: A Crude Server - Express TypeScript CRUD API
 
 ```sh
    cd src/04
@@ -41,7 +39,7 @@
 
 ```
 
-4. Problem 6: Architecture
+6. Problem 6: Architecture
 
 ```sh
    cd src/04
