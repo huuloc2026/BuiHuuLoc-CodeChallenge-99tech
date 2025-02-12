@@ -25,6 +25,23 @@ export class UserService {
 
     return { users, totalUsers };
   }
+  static async listUsersWithFilter(
+    gender?: string,
+    page: number = 1,
+    limit: number = 10
+  ) {
+    const skip = (page - 1) * limit;
+
+    let query: any = {}; // Default query (empty means no filtering)
+    if (gender) {
+      query.gender = gender; // Add gender filter if provided
+    }
+
+    const users = await User.find(query).skip(skip).limit(limit);
+    const totalUsers = await User.countDocuments(query); // Count users matching the filter
+
+    return { users, totalUsers };
+  }
 
   // Get a single user by ID
   static async getUserById(id: string): Promise<IUser | null> {

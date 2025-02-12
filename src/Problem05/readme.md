@@ -31,3 +31,90 @@ Clone the repository:
 git clone https://github.com/your-username/express-typescript-crud.git
 cd express-typescript-crud
 ```
+
+## API Endpoints
+
+| Method | URL             | Description                                          |
+| ------ | --------------- | ---------------------------------------------------- |
+| GET    | `/users/health` | Health check endpoint                                |
+| POST   | `/users`        | Create a new user                                    |
+| GET    | `/users`        | List all users (with pagination: `?page=1&limit=10`) |
+| GET    | `/users/:id`    | Get user details                                     |
+| PUT    | `/users/:id`    | Update user details                                  |
+| DELETE | `/users/:id`    | Delete a user                                        |
+
+## Testing with Postman or cURL
+
+### Create a User
+
+```bash
+curl -X POST http://localhost:3000/users \
+     -H "Content-Type: application/json" \
+     -d '{"name": "John Doe", "email": "john@example.com", "password": "123456"}'
+```
+
+### List Users
+
+```bash
+curl http://localhost:3000/users
+```
+
+### Get User Details
+
+```bash
+curl http://localhost:3000/users/{userId}
+```
+
+### Update User
+
+```bash
+curl -X PUT http://localhost:3000/users/{userId} \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Updated Name"}'
+```
+
+### Delete User
+
+```bash
+curl -X DELETE http://localhost:3000/users/{userId}
+```
+
+## API Request Examples
+
+### Get all users (No filter)
+
+```http
+GET /users?page=1&limit=10
+```
+
+### Get users with `gender=male`
+
+```http
+GET /users?page=1&limit=10&gender=male
+```
+
+## Final Response Example
+
+```json
+{
+  "status": "success",
+  "message": "Filtered users retrieved successfully",
+  "data": {
+    "users": [
+      {
+        "id": "65abcd1234efg567hij890",
+        "name": "John Doe",
+        "email": "john@example.com",
+        "gender": "male",
+        "createdAt": "2025-02-12T12:00:00.000Z"
+      }
+    ],
+    "pagination": {
+      "totalUsers": 50,
+      "totalPages": 5,
+      "currentPage": 1,
+      "limitPerPage": 10
+    }
+  }
+}
+```

@@ -10,14 +10,7 @@
 
 2. Configure PostgreSQL database in `src/data-source.ts`.
 
-3. Run the server:
-
-   ```sh
-   npm run dev
-
-   ```
-
-4. Problem 04: Three Way to Sum n
+3. Problem 04: Three Way to Sum n
 
    ```sh
    cd src/04
@@ -27,19 +20,14 @@
    npm run 04
    ```
 
-5. Problem 05: A Crude Server - Express TypeScript CRUD API
-
-```sh
+4. Problem 05: A Crude Server - Express TypeScript CRUD API
+   ```sh
    cd src/04
-
-```
-
-```sh
+   ```
+   ```sh
    npm run 05
-
-```
-
-6. Problem 6: Architecture
+   ```
+5. Problem 6: Architecture
 
 ```sh
    cd src/04

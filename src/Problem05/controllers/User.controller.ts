@@ -91,7 +91,41 @@ export class UserController {
       next(error);
     }
   };
+  static listWithCond = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> => {
+    try {
+      const { gender } = req.query; // Extract gender from query params
+      const page = Math.max(Number(req.query.page) || 1, 1);
+      const limit = Math.max(Number(req.query.limit) || 10, 1);
 
+      const { users, totalUsers } = await UserService.listUsersWithFilter(
+        gender as string,
+        page,
+        limit
+      );
+
+      const totalPages = Math.ceil(totalUsers / limit);
+
+      return HandleResponse.success(
+        res,
+        {
+          users,
+          pagination: {
+            totalUsers,
+            totalPages,
+            currentPage: page,
+            limitPerPage: limit,
+          },
+        },
+        "Filtered users retrieved successfully"
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
   // Get user details
   static getDetail = async (
     req: Request,
