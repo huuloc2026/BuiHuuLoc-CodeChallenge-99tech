@@ -118,35 +118,7 @@ Body:
 ## **Execution Flow Diagram**
 
 ```
-+------------+        +-----------------+        +------------------+
-|   User     | -----> | Frontend (UI)   | -----> | API Server       |
-|  Performs  |        | Calls API       |        | Authenticates &  |
-|  Action    |        | POST /score     |        | Updates Score    |
-+------------+        +-----------------+        +------------------+
-                                              |
-                                              v
-                                      +----------------+
-                                      |  Scoreboard DB |
-                                      +----------------+
-```
-
-```
-+------------+ WebSocket +------------------+ Database Update +-----------------+
-| Client | <------------------> | API WebSocket | ------------------------> | Scoreboard DB |
-| (Browser) | | Server | | (Top 10 Users) |
-+------------+ +------------------+ +-----------------+
-     |
-     | User performs an action
-     |---------------------------------->| (1) Client sends "increase score" request
-     |
-     | Server validates and updates DB
-     |---------------------------------->| (2) Server authenticates & updates score in DB
-     |
-     | Server pushes real-time update
-     |<---------------------------------| (3) WebSocket sends new top 10 scores
-     |
-     | Client updates UI instantly
-     |<---------------------------------| (4) Browser re-renders scoreboard
+![alt text](image.png)
 ```
 
 ## \*\*Improvement Recommendations
