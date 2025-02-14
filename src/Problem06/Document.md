@@ -149,15 +149,36 @@ Body:
      |<---------------------------------| (4) Browser re-renders scoreboard
 ```
 
----
+## \*\*Improvement Recommendations
 
-## **Improvements & Future Enhancements**
+1. Caching Layer
+   Add Redis caching for leaderboard data to reduce database load
 
-- Implement caching for leaderboard queries to optimize performance.
-- Add WebSocket support for instant UI updates.
-- Use a leaderboard service like Redis Sorted Sets for better efficiency.
-- Enhance logging and monitoring for better debugging and analytics.
+2. Enhanced Fraud Detection
+   Implement machine learning model to detect abnormal score patterns
 
----
+3. Database Optimization
+   Use PostgreSQL window functions for efficient ranking queries
+
+4. Request Tracing
+   Add distributed tracing IDs for audit logging
+
+5. Async Processing
+   Use message queue (RabbitMQ) for non-critical update tasks
+
+6. Load Testing
+   Include locust.io load test scenarios for spike testing
+
+**Implementation Notes for Engineering Team**
+
+1. Use **idempotency keys** for score update requests to prevent duplicate processing
+2. Implement **circuit breakers** for Auth Service communication
+3. **Database transactions** MUST be used for score updates+leaderboard fetch
+4. WebSocket messages should use **protocol buffers** for efficient serialization
+5. All security checks must be **fail-closed** (reject on error)
+6. Include Prometheus metrics for:
+   - Score update attempts (success/fraudulent)
+   - Leaderboard refresh latency
+   - WebSocket connection health
 
 This document serves as a blueprint for the backend engineering team to implement the API module efficiently and securely.
