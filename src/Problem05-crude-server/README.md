@@ -21,7 +21,7 @@ Before you begin, ensure you have the following installed:
 - **Node.js** (v14 or higher)
 - **npm** (Node Package Manager)
 - **TypeScript** (`npm install -g typescript`)
-- **SQLite3** (for database)
+- **MongoDB** (for database)
 
 ## Installation
 
