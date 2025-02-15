@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { UserService } from "../services/User.service";
+import { UserFilter } from "../models/User.models";
 
 export class HandleResponse {
   static success(
@@ -97,12 +98,14 @@ export class UserController {
     next: NextFunction
   ): Promise<any> => {
     try {
-      const { gender } = req.query; // Extract gender from query params
+      const { gender, phone } = req.query;
       const page = Math.max(Number(req.query.page) || 1, 1);
       const limit = Math.max(Number(req.query.limit) || 10, 1);
-
+      const cond: UserFilter = {};
+      if (gender) cond.gender = gender as string;
+      if (phone) cond.phone = phone as string;
       const { users, totalUsers } = await UserService.listUsersWithFilter(
-        gender as string,
+        cond,
         page,
         limit
       );

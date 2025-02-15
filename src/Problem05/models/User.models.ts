@@ -18,5 +18,8 @@ const UserSchema: Schema = new Schema(
   },
   { timestamps: true }
 );
-
+export interface UserFilter {
+  gender?: string;
+  phone?: string;
+}
 export const User = mongoose.model<IUser>("User", UserSchema);
