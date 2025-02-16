@@ -28,8 +28,21 @@ Before you begin, ensure you have the following installed:
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/express-typescript-crud.git
-cd express-typescript-crud
+git clone https://github.com/huuloc2026/BuiHuuLoc-CodeChallenge-99tech
+cd src
+cd Problem05-crude-server
+```
+
+Run Docker Compose
+
+```bash
+Docker Compose Up - D
+```
+
+Run Project
+
+```bash
+Npm run dev
 ```
 
 ## API Endpoints
