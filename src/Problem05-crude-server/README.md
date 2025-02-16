@@ -16,7 +16,7 @@ This project is a simple backend server built with ExpressJS and TypeScript. It 
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
+Ensure you have the following installed:
 
 - **Node.js** (v14 or higher)
 - **npm** (Node Package Manager)
@@ -29,20 +29,19 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/huuloc2026/BuiHuuLoc-CodeChallenge-99tech
-cd src
-cd Problem05-crude-server
+cd src/Problem05-crude-server
 ```
 
-Run Docker Compose
+Run Docker Compose:
 
 ```bash
-Docker Compose Up - D
+docker-compose up -d
 ```
 
-Run Project
+Run the project:
 
 ```bash
-Npm run dev
+npm run dev
 ```
 
 ## API Endpoints
@@ -62,8 +61,8 @@ Npm run dev
 
 ```bash
 curl -X POST http://localhost:3000/users \
-     -H "Content-Type: application/json" \
-     -d '{"name": "John Doe", "email": "john@example.com", "password": "123456"}'
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com", "password": "123456"}'
 ```
 
 ### List Users
@@ -82,8 +81,8 @@ curl http://localhost:3000/users/{userId}
 
 ```bash
 curl -X PUT http://localhost:3000/users/{userId} \
-     -H "Content-Type: application/json" \
-     -d '{"name": "Updated Name"}'
+  -H "Content-Type: application/json" \
+  -d '{"name": "Updated Name"}'
 ```
 
 ### Delete User
