@@ -21,7 +21,9 @@ class MongoDBConnect {
         maxPoolSize: 100,
       })
       .then(() => {})
-      .catch((err: any) => console.log("Error connecting database: " + err));
+      .catch((err: Error) =>
+        console.error("Error connecting database: " + err)
+      );
     mongoose.connection.on("connected", () => {
       console.info("Connected to MongoDB!");
     });
@@ -36,7 +38,7 @@ class MongoDBConnect {
     });
   }
 
-  static instance: any;
+  static instance;
   static getInstance() {
     if (!MongoDBConnect.instance) {
       MongoDBConnect.instance = new MongoDBConnect();

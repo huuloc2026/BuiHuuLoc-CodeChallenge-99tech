@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "04": "npx tsx src/Problem04/threeWaytoSumSolution.ts",
-    "dev": "npx tsx --watch src/Problem05/server.ts",
+    "dev": "npx tsx --watch src/Problem05-crude-server/server.ts",
     "06": "npx tsx --watch src/Problem05/server.ts"
   },
   "keywords": [],

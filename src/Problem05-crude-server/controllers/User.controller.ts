@@ -1,38 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { UserService } from "../services/User.service";
 import { UserFilter } from "../models/User.models";
-
-export class HandleResponse {
-  static success(
-    res: Response,
-    data: any,
-    message = "Success",
-    status = 200,
-    metadata = null
-  ) {
-    return res.status(status).json({
-      status: "success",
-      message,
-      data,
-      metadata,
-    });
-  }
-
-  static error(res: Response, error: any, status = 500) {
-    return res.status(status).json({
-      status: "error",
-      message: error.message || "Internal Server Error",
-      error,
-    });
-  }
-
-  static notFound(res: Response, message = "Resource not found") {
-    return res.status(404).json({
-      status: "error",
-      message,
-    });
-  }
-}
+import { HandleResponse } from "../utils/handleResponse";
 
 export class UserController {
   // Health check endpoint
@@ -48,7 +17,7 @@ export class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<any> => {
+  ): Promise<Response> => {
     try {
       const user = await UserService.createUser(req.body);
       return HandleResponse.success(
@@ -67,7 +36,7 @@ export class UserController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<any> => {
+  ): Promise<Response> => {
     try {
       const page = Math.max(Number(req.query.page) || 1, 1); // Ensure page is at least 1
       const limit = Math.max(Number(req.query.limit) || 10, 1); // Ensure limit is at least 1
