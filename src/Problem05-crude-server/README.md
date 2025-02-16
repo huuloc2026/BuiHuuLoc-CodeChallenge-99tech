@@ -1,6 +1,6 @@
 # ExpressJS Backend Server with TypeScript
 
-This project is a simple backend server built with ExpressJS and TypeScript. It provides a set of CRUD (Create, Read, Update, Delete) interfaces to interact with a resource. The server is connected to a SQLite database for data persistence.
+This project is a simple backend server built with ExpressJS and TypeScript. It provides a set of CRUD (Create, Read, Update, Delete) interfaces to interact with a resource. The server is connected to a MongoDB database for data persistence.
 
 ## Table of Contents
 
