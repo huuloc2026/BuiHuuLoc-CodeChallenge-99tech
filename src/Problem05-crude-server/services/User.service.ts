@@ -4,6 +4,10 @@ import bcrypt from "bcrypt";
 export class UserService {
   // Create a new user
   static async createUser(data: IUser): Promise<IUser> {
+    const checkExist = await this.checkEmailExist(data.email);
+    if (checkExist) {
+      throw new Error("Email already exists");
+    }
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(data.password, saltRounds);
     // Create user with hashed password
@@ -14,6 +18,11 @@ export class UserService {
     });
     await newUser.save();
     return newUser;
+  }
+
+  static async checkEmailExist(email: string): Promise<boolean> {
+    const emailExist = await User.findOne({ email });
+    return emailExist !== null;
   }
 
   // Get all users with pagination

@@ -20,7 +20,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  const error = new Error("Not Found");
+  const error = new Error("Page Not Found");
   next(error);
 });
 
