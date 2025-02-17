@@ -1,4 +1,4 @@
-# 99Tech Code Challenge #1
+# 99Tech Code Challenge - Bui Huu Loc #1
 
 # Setup
 
@@ -8,33 +8,41 @@
    npm install
    ```
 
-2. Configure PostgreSQL database in `src/data-source.ts`.
-
-3. Problem 04: Three Way to Sum n
+2. Problem 04: Three Way to Sum n
 
    ```sh
-   cd src/04
+   cd src/Problem04-threewaytosum
    ```
 
    ```sh
    npm run 04
    ```
 
-4. Problem 05: A Crude Server - Express TypeScript CRUD API
+3. Problem 05: A Crude Server - Express TypeScript CRUD API
+
    ```sh
-   cd src/04
+   cd src/Problem05-crude-server
    ```
+
+   1. Configure MongoDB database in `database/datasource.ts`.
+
    ```sh
    npm run 05
    ```
-5. Problem 6: Architecture
 
-```sh
-   cd src/04
+4. Problem 6: Architecture
 
-```
+   ```sh
+      cd src/Problem06-Architecture
 
-```sh
-   npm run 06
+   ```
 
-```
+   ```sh
+      nano Document.md
+   ```
+
+   or
+
+   ```sh
+      npm run 06
+   ```
