@@ -156,7 +156,7 @@ GET /api/score/top
 
 ## Execution Flow Diagram
 
-![alt text](image.png)
+![alt text](Untitled.svg)
 
 ## Improvement Recommendations
 
