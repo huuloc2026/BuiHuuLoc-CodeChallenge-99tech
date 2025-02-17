@@ -4,13 +4,34 @@
 
 This document outlines the implementation details of a real-time scoreboard system, ensuring live updates and security measures to prevent unauthorized score manipulation.
 
+## Technology Stack
+
+- **Backend**: Node.js, Express.js
+- **Database**: PostgreSQL
+- **Cache & Leaderboard**: Redis (Sorted Sets)
+- **Real-Time Communication**: WebSockets (with Redis Pub/Sub)
+- **Authentication**: JWT, OAuth 2.0
+- **Monitoring & Security**: Prometheus, Grafana, HMAC Signatures, Rate Limiting
+
+## System Architecture
+
+```
++------------+        +-------------+        +------------+
+|  Frontend  | <--->  |  WebSocket  | <--->  |  Backend   |
++------------+        +-------------+        +------------+
+                               |                  |
+                           +--------+       +------------+
+                           | Redis  | <-->  | PostgreSQL |
+                           +--------+       +------------+
+```
+
 ## Requirements
 
-1. The system displays a scoreboard with the **top 10 user scores**.
-2. Scores should be **updated in real-time**.
-3. Users increase their score by performing a predefined action.
-4. The system receives an API request upon action completion to update the score.
-5. Security mechanisms must be in place to prevent score manipulation.
+1. **Scoreboard displays the top 10 user scores.**
+2. **Scores update in real-time.**
+3. **Users increase their score by performing predefined actions.**
+4. **The system updates scores via an API request upon action completion.**
+5. **Security measures prevent score manipulation.**
 
 ---
 
@@ -20,13 +41,14 @@ This document outlines the implementation details of a real-time scoreboard syst
 
 To ensure real-time updates, we will use **WebSockets**:
 
-- **Frontend:** Listens to score updates from the server via WebSockets.
-- **Backend:** Broadcasts updated scores to all connected clients when a user’s score changes.
+- **Frontend**: Listens for score updates via WebSockets.
+- **Backend**: Broadcasts updated scores using WebSockets.
+- **Scalability**: Redis Pub/Sub is used to synchronize WebSocket messages across multiple instances.
 
 **Alternative Approaches:**
 
-- **Server-Sent Events (SSE):** If only one-way communication from the server to the client is needed.
-- **Polling (Fallback):** If WebSockets are unavailable, periodic polling can be used (not recommended for scalability).
+- **Server-Sent Events (SSE)**: For one-way communication.
+- **Polling (Fallback)**: Periodic polling (less efficient but works as a backup).
 
 ### 2. API for Score Updates
 
@@ -45,7 +67,16 @@ Body:
    }
 ```
 
-**Response:**
+#### **Backend Processing:**
+
+1. **Verify JWT authentication.**
+2. **Validate `actionType`** (e.g., `game_win`, `bonus_event`).
+3. **Compute new score on server**, avoiding client-side score tampering.
+4. **Apply rate limiting & cooldowns** to prevent abuse.
+5. **Store new score in PostgreSQL & update Redis cache.**
+6. **Broadcast updated leaderboard via WebSockets.**
+
+## **Response:**
 
 - `200 OK` - Score updated successfully.
 - `400 Bad Request` - Invalid request data.
@@ -55,6 +86,10 @@ Body:
 ### 3. Retrieve Top 10 Scores
 
 **Endpoint:** `GET /api/score/top`
+
+```http
+GET /api/score/top
+```
 
 **Description:** Fetches the top 10 users with the highest scores.
 
@@ -75,43 +110,47 @@ Body:
 
 ## Security Measures Against Fraudulent Score Manipulation
 
+## Security Measures
+
 ### 1. Authentication & Authorization
 
-- **JWT Authentication:** API requests must include a valid JWT token to verify the user.
-- **OAuth 2.0 Support:** For third-party authentication integrations.
-- **API Key or HMAC Signature:** Additional security layer to verify request authenticity.
+- **JWT Authentication:** Verifies user identity.
+- **OAuth 2.0 Support:** For third-party authentication.
+- **HMAC Signature:** Protects request integrity.
 
-### 2. Rate Limiting & Anti-Spam Measures
+### 2. Anti-Fraud & Rate Limiting
 
-- **Rate Limiting:** Limit the number of score update requests per user/IP.
-- **Throttling:** Apply incremental backoff delays on excessive requests.
-- **Action Cooldown:** Introduce a cooldown period before allowing another score update.
+- **Replay Attack Prevention:** Requests must include a timestamp + nonce.
+- **Rate Limiting:** Max **5 score updates per minute** per user.
+- **IP Throttling:** Blocks excessive requests.
+- **Action Cooldown:** Users must wait before sending another update.
 
 ### 3. Data Validation & Anomaly Detection
 
-- **Server-Side Validation:** The server determines the score increment instead of trusting client data.
-- **Score Threshold Checks:** Reject unrealistic increments (e.g., +1000 points in 1 second).
-- **HMAC Signature Verification:** Prevent tampering with request payloads.
+- **Server-Side Score Calculation:** Clients send actions, not scores.
+- **Score Threshold Checks:** Prevent unrealistic jumps (e.g., +1000 points in 1 sec).
+- **Behavioral Monitoring:** Detects unusual score patterns.
 
-### 4. Fraud Detection & Monitoring
+### 4. Action Verification Mechanisms
 
-- **Behavioral Analysis:** Monitor score update patterns and flag anomalies.
-- **Logging & Auditing:** Maintain logs for suspicious activity review.
-- **IP/User Blacklisting:** Block users or IPs that exhibit malicious behavior.
-
-### 5. Action Verification Mechanism
-
-- **Server-Side Event Validation:** Ensure score increments are triggered by a legitimate server-side event.
-- **CAPTCHA Challenges:** Require CAPTCHA verification for high-frequency requests.
-- **Proof-of-Work (PoW):** Introduce computational challenges to prevent automated abuse.
+- **Server-Side Event Validation:** Ensures legitimate actions trigger score updates.
+- **Proof-of-Work (PoW):** Computational challenge for high-frequency requests.
+- **CAPTCHA Challenges:** Adds an extra layer of protection.
 
 ---
 
 ## Database & Leaderboard Optimization
 
-- **Use Redis for Caching:** Fast retrieval of the top 10 scores.
-- **Indexed Queries:** Optimize database queries for ranking calculations.
-- **Eventual Consistency:** Use a combination of in-memory storage and persistent database updates.
+### **Redis for Real-Time Leaderboard**
+
+- **Store top 10 scores using Redis Sorted Sets Fast retrieval of the top 10 scores.**
+- **Efficient ranking queries with O(log N) insert & O(10) retrieval.**
+- **Background sync with PostgreSQL to ensure consistency.**
+
+### **Batch Processing for Score Updates**
+
+- **Queue-based processing (RabbitMQ) for high-traffic handling.**
+- **Async updates to prevent API lag.**
 
 ---
 
@@ -128,7 +167,7 @@ Body:
 5. **Async Processing:** Use message queue (RabbitMQ) for non-critical update tasks.
 6. **Load Testing:** Include locust.io load test scenarios for spike testing.
 
-**Implementation Notes for Engineering Team**
+## **Implementation Notes for Engineering Team**
 
 1. Use **idempotency keys** for score update requests to prevent duplicate processing.
 2. Implement **circuit breakers** for Auth Service communication.
