@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "04": "npx tsx src/Problem04/threeWaytoSumSolution.ts",
+    "04": "npx tsx src/Problem04-threewaytosum/threeWaytoSumSolution.ts",
     "05": "npx tsx --watch src/Problem05-crude-server/server.ts",
     "06": "nano src/Problem06-Architecture/Document.md"
   },
