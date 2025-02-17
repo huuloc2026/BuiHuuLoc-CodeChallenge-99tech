@@ -24,7 +24,13 @@
    cd src/Problem05-crude-server
    ```
 
-   1. Configure MongoDB database in `database/datasource.ts`.
+   Configure MongoDB database in `database/datasource.ts`.
+
+   Follow like this URI Mongodb:
+
+   ```sh
+   MONGO_URI=mongodb://root:example@localhost:27017/99tech?authSource=admin&retryWrites=true&w=majority
+   ```
 
    ```sh
    npm run 05
